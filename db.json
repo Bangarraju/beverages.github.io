@@ -1,0 +1,99 @@
+{
+  "BeveragesMenu": [
+    {
+      "id": 1,
+      "BeverageId": "04d8e4eb-306e-4ff3-a027-7bed4da883f8",
+      "Name": "Sparkling Cranberry Punch"
+    },
+    {
+      "id": 2,
+      "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
+      "Name": "Raspberry Fizz"
+    },
+    {
+      "id": 3,
+      "BeverageId": "1d10b218-f4da-4ae3-a383-de1657dbaa6a",
+      "Name": "Virgin Frozen Margarita"
+    },
+    {
+      "id": 4,
+      "BeverageId": "241ae7d5-4ccb-4b74-8783-bbe2c55f162f",
+      "Name": "Iced Chocolate Delight"
+    },
+    {
+      "id": 5,
+      "BeverageId": "2630c442-84a7-4e44-829f-38e15f7fcbbb",
+      "Name": "Summer Punch"
+    }
+  ],
+  "BeveragesQueue": [
+    {
+      "id": 1,
+      "customerName": "a",
+      "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
+      "BeverageBarOrderId": "733416c1-89ed-46ab-9484-e88ce05960ad",
+      "OrderedBeverage": {
+        "BeverageId": "04d8e4eb-306e-4ff3-a027-7bed4da883f8",
+        "Name": "Sparkling Cranberry Punch"
+      },
+      "OrderQuantity": 1,
+      "IsBeingMixed": true,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
+      "BeverageBarUserId": "U034AT9TN",
+      "BeverageBarUserFirstName": "Lloyd",
+      "OrderDeliveredTimeStamp": "0001-01-01T00:00:00+00:00"
+    },
+    {
+      "id": 2,
+      "customerName": "b",
+      "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
+      "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
+      "OrderedBeverage": {
+        "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
+        "Name": "Raspberry Fizz"
+      },
+      "OrderQuantity": 2,
+      "IsBeingMixed": false,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
+      "BeverageBarUserId": "U034AT9TN",
+      "BeverageBarUserFirstName": "Lloyd",
+      "OrderDeliveredTimeStamp": "0001-01-01T00:00:00+00:00"
+    },
+    {
+      "id": 3,
+      "customerName": "c",
+      "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
+      "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
+      "OrderedBeverage": {
+        "BeverageId": "1d10b218-f4da-4ae3-a383-de1657dbaa6a",
+        "Name": "Virgin Frozen Margarita"
+      },
+      "OrderQuantity": 1,
+      "IsBeingMixed": true,
+      "IsReadyToCollect": true,
+      "IsCollected": false,
+      "BeverageBarUserId": "U034AT9TN",
+      "BeverageBarUserFirstName": "Lloyd",
+      "OrderDeliveredTimeStamp": 1594052165764
+    },
+    {
+      "id": 4,
+      "customerName": "d",
+      "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
+      "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
+      "OrderedBeverage": {
+        "BeverageId": "241ae7d5-4ccb-4b74-8783-bbe2c55f162f",
+        "Name": "Iced Chocolate Delight"
+      },
+      "OrderQuantity": 1,
+      "IsBeingMixed": false,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
+      "BeverageBarUserId": "U034AT9TN",
+      "BeverageBarUserFirstName": "Lloyd",
+      "OrderDeliveredTimeStamp": 1594199430867
+    }
+  ]
+}

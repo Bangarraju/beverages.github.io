@@ -1,0 +1,4 @@
+{
+    "BeveragesMenu": "BeverageId",
+    "BeveragesQueue": "BeverageBarOrderId"
+}
