@@ -88,12 +88,26 @@
         "Name": "Iced Chocolate Delight"
       },
       "OrderQuantity": 1,
+      "IsBeingMixed": true,
+      "IsReadyToCollect": true,
+      "IsCollected": true,
+      "BeverageBarUserId": "U034AT9TN",
+      "BeverageBarUserFirstName": "Lloyd",
+      "OrderDeliveredTimeStamp": 1594906505785
+    },
+    {
+      "customerName": "Raju",
+      "OrderCreatedTimeStamp": 1594906459421,
+      "BeverageBarOrderId": 0.09800981456445745,
+      "OrderedBeverage": {
+        "BeverageId": "1d10b218-f4da-4ae3-a383-de1657dbaa6a",
+        "Name": "Virgin Frozen Margarita"
+      },
       "IsBeingMixed": false,
       "IsReadyToCollect": false,
       "IsCollected": false,
-      "BeverageBarUserId": "U034AT9TN",
-      "BeverageBarUserFirstName": "Lloyd",
-      "OrderDeliveredTimeStamp": 1594199430867
+      "OrderDeliveredTimeStamp": 1594906459421,
+      "id": 5
     }
   ]
 }
