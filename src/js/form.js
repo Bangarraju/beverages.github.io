@@ -3,7 +3,7 @@ import Beverage from './beverage';
 
 import '../styles/form.scss'
 
-const beverage = Beverage;
+const beverage = Beverage; //beverage object
 
 //set the option elements into dorpdown 
 function setdropdownList() {
@@ -28,13 +28,13 @@ const validateform = function () {
     if (customerName !== "" && beverage !== "" && phoneNumber !== "") {
         return true;
     } else {
-
+        //validating customerName whether it is filles=d or not
         (customerName == "" || customerName == null) ? addClassToElement('customerName','required')
                                                     : removeClassToElement('customerName','required'); 
-
+        //validating beverage item whether it is selected or not
         (beverage == "" || beverage == null) ? addClassToElement('beverage','required')
                                             : removeClassToElement('beverage','required');
-        
+        //validating phoneNumber whether it is filled or not
         (phoneNumber == "" || phoneNumber == null) ? addClassToElement('phoneNumber','required')
                                                   : removeClassToElement('phoneNumber','required') 
         return false;
@@ -51,7 +51,7 @@ const validateform = function () {
 function validatePhoneNumber(data){
     let phoneNumber = document.forms["orderForm"]["phoneNumber"].value
     console.log(typeof phoneNumber)
-    var phoneRegex = /^\d{10}$/;
+    var phoneRegex = /^\d{10}$/; //regex for phone number 
     if(phoneNumber.length>0 && phoneNumber.match(phoneRegex))
     {
         document.getElementById('phoneErrorMessage').innerText = '';
@@ -64,7 +64,8 @@ function validatePhoneNumber(data){
 }
 
 window.onload = function () {
-    setdropdownList();
+    setdropdownList(); //set dropdown list
+    //validating form on submit
     document.orderForm.onsubmit = (e) => {
         if (validateform() && validatePhoneNumber() ) {
             beverage.orderBeverage(e);
