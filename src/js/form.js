@@ -3,7 +3,7 @@ import Beverage from './beverage';
 
 import '../styles/form.scss'
 
-var beverage = Beverage;
+const beverage = Beverage;
 
 //set the option elements into dorpdown 
 function setdropdownList() {
@@ -19,37 +19,82 @@ function setdropdownList() {
     }
 }
 
-var validateform = function () {
-    var form = document.forms["orderForm"];
-    var customerName = form["customerName"].value;
-    var beverage = form["beverage"].value;
-    var phoneNumber = form["phoneNumber"].value;
+//validate form weather the fields are filled or not
+const validateform = function () {
+    let form = document.forms["orderForm"];
+    let customerName = form["customerName"].value;
+    let beverage = form["beverage"].value;
+    let phoneNumber = form["phoneNumber"].value;
     if (customerName !== "" && beverage !== "" && phoneNumber !== "") {
         return true;
     } else {
 
-        (customerName == "" || customerName == null || customerName == undefined)?form["customerName"].classList.add('required')
-                                                                                :form["customerName"].classList.remove('required'); 
+        (customerName == "" || customerName == null) ? addClassToElement('customerName','required')
+                                                    : removeClassToElement('customerName','required'); 
 
-        (beverage == "" || beverage == null || beverage == undefined)?form["beverage"].classList.add('required')
-                                                                    :form["beverage"].classList.remove('required'); 
+        (beverage == "" || beverage == null) ? addClassToElement('beverage','required')
+                                            : removeClassToElement('beverage','required');
         
-        (phoneNumber == "" || phoneNumber == null || phoneNumber == undefined)?form["phoneNumber"].classList.add('required')
-                                                                    :form["phoneNumber"].classList.remove('required'); 
+        (phoneNumber == "" || phoneNumber == null) ? addClassToElement('phoneNumber','required')
+                                                  : removeClassToElement('phoneNumber','required') 
+        return false;
+    }
+    function addClassToElement(ElementName, className){
+        form[ElementName].classList.add(className)
+    }
+    function removeClassToElement(ElementName,className){
+        form[ElementName].classList.remove(className)
+    }
+}
+
+//validation of phone number 
+function validatePhoneNumber(data){
+    let phoneNumber = document.forms["orderForm"]["phoneNumber"].value
+    console.log(typeof phoneNumber)
+    var phoneRegex = /^\d{10}$/;
+    if(phoneNumber.length>0 && phoneNumber.match(phoneRegex))
+    {
+        document.getElementById('phoneErrorMessage').innerText = '';
+        return true;
+    }else
+    {
+        document.getElementById('phoneErrorMessage').innerText = '* rquired digits and 10 digit phone number'
         return false;
     }
 }
 
-
-
 window.onload = function () {
     setdropdownList();
     document.orderForm.onsubmit = (e) => {
-        if (validateform()) {
+        if (validateform() && validatePhoneNumber() ) {
             beverage.orderBeverage(e);
         } else {
-            event.preventDefault();
+            e.preventDefault();
             document.getElementById("errorMessage").innerText = "* Some fields required"
         }
     }
+
+    //onBlur on phone number field
+    $("input[name='phoneNumber']").on("blur",function () {
+        if(validatePhoneNumber()){
+            this.classList.remove('required')
+        }else {
+            this.classList.add('required')
+        }
+    })
+
+    //onblur on customerName field of form
+    $("input[name='customerName']").on("blur",function () {
+        if(this.value){
+            this.classList.remove('required')
+        }else{
+            this.classList.add('required')
+        }
+    })
+
+    //onblur on select field
+    $("select").on("blur",function(){
+        this.classList.remove('required')
+    })
+        
 }

@@ -1,18 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Beverages Menu and Ordering Application</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid-theme.min.css" />
+    
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.5.3/jsgrid.min.js"></script>
 </head>
+
 <body>
     <div id="mainContainer">
-        <button id="switchView" style="float:right; margin: 10px; cursor: pointer;">
-            switch view
-        </button>
+        <div class="viewContainer">
+            <button id="switchView" style="cursor: pointer;">
+                Switch view
+            </button>
+            <button id="gridView" style="cursor: pointer;">
+                Grid view
+            </button>
+        </div>
         <div class="main">
-            <div>
+            <div id="menuContainer">
                 <div class="title">Beverage Menu</div>
                 <div class="menu">
                     <ul id="beverageMenu"></ul>
@@ -43,11 +55,16 @@
             </div>
             <div id="completedOrdersContainer" hidden="true">
                 <div class="title">Completed Orders</div>
-                <div class="collected" id="">
+                <div class="collected">
                     <div>
                         <h3>Already Collected Items</h3>
                         <ul id="isCollected"></ul>
                     </div>
+                </div>
+            </div>
+            <div id="gridViewContainer" hidden>
+                <div class="title">List of orders</div>
+                <div id="grid" class="ag-theme-alpine" style="height: 400px;width:600px;">
                 </div>
             </div>
         </div>

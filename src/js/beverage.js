@@ -1,7 +1,7 @@
 import Service from './service';
 import { append } from './nodeOperations';
 
-var service = Service;
+const service = Service;
 
 class Beverage{
 
@@ -26,14 +26,16 @@ class Beverage{
     orderBeverage(event) {
         event.preventDefault();
         const url = "/BeveragesQueue";
-        var formdata = new FormData(formele);
-        var selector = document.getElementById('menuDropdown');
+        let formdata = new FormData(formele);
+        let selector = document.getElementById('menuDropdown');
         this.OrderedBeverage.BeverageId = selector[selector.selectedIndex].id;
         this.OrderedBeverage.Name = formdata.get('beverage')
         this.customerName = formdata.get('customerName')
         this.phoneNumber = formdata.get('phoneNumber')
         this.address = formdata.get('address')
+        //post ordered beverage to server
         service.sendRequest(url, 'POST', this, postStatus,)
+        //call back function to handle request of post
         function postStatus(status, data) {
             if (status == 201) {
                 window.open('index.html', '_self')
@@ -50,30 +52,39 @@ class Beverage{
         const clickId = event.path[2].id;
         const itemId = event.target.id;
         const url = `/BeveragesQueue/${itemId}`;
-        var clickLiele = document.getElementById(itemId).parentElement;
-        var currentStateEle = document.getElementById(clickId);
+        let clickLiele = document.getElementById(itemId).parentElement;
+        let currentStateEle = document.getElementById(clickId);
         if (clickId == "inQueue") {
-            this.IsBeingMixed = true;
+            this.IsBeingMixed = true; //set isBeingMixed flag to true
             let nextStateEle = document.getElementById('isBeingMixed');
             currentStateEle.removeChild(clickLiele);
             append(nextStateEle, clickLiele);
         } else if (clickId == "isBeingMixed") {
-            this.IsReadyToCollect = true;
+            this.IsReadyToCollect = true; //set isreadytocollect flag to true
             let nextStateEle = document.getElementById('isReadyToCollect');
             currentStateEle.removeChild(clickLiele);
             append(nextStateEle, clickLiele);
         } else if (clickId == "isReadyToCollect") {
-            this.IsCollected = true;
-            document.getElementById(itemId).firstChild.lastElementChild.hidden = false;
+            this.IsCollected = true; //set iscollected flag to true
+            //show hidden data in collected elements
+            document.getElementById(itemId).firstChild.lastElementChild.hidden = false; 
             document.getElementById(itemId).lastElementChild.lastElementChild.hidden = false;
-            this.OrderDeliveredTimeStamp = Date.now();
+            this.OrderDeliveredTimeStamp = Date.now(); // set completed date to when it is completed
             let nextStateEle = document.getElementById('isCollected');
             currentStateEle.removeChild(clickLiele);
             append(nextStateEle, clickLiele);
         }
 
-
-        service.sendRequest(url, 'PATCH', this, (response, data) => { console.log(response) },)
+        //send changed data to server 
+        service.sendRequest(url, 'PATCH', this, handleRequst )
+        //callback function to handle request of patch 
+        function handleRequst(status, data){
+            if(status == 200){
+                console.log('patched data sucess')
+            }else{
+                console.log('patch failed')
+            }
+        }
     }
 }
 
