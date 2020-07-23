@@ -1,13 +1,14 @@
 import Service from './service';
 import { createNode, append } from './nodeOperations';
 import Beverage from './beverage';
+import { gridView, onPageSizeChanged } from './gridView';
 import '../styles/main.scss';
 
-var localStorage = window.localStorage; // local storage object 
-var service = Service;
-var beverage = Beverage;
+const localStorage = window.localStorage; // local storage object 
+const service = Service; //axios service object
+const beverage = Beverage; // beverage object to order and changing queue
 
-
+/* get menu from server and set it into the local storage*/
 service.get("/BeveragesMenu", setMenu)
 
 function setMenu(status, data) {
@@ -30,10 +31,12 @@ function appendItemsintoList(item, ul) {
     let date = new Date(item.OrderDeliveredTimeStamp);
     maindiv.id = `${item.id}`;
     if (ul !== document.getElementById('isCollected')) {
+        //this logic is for in queue elements to hide remaining data
         beverageDiv.innerHTML = `<b>${item.OrderedBeverage.Name}</b><br/><span hidden>${date? date.toDateString() :''}</span>`;
         customerDiv.innerHTML = `<b>${item.customerName}</b><br/><span hidden> ${item.phoneNumber?item.phoneNumber:''}<br/> ${item.address? item.address : ''}</span>`;
         maindiv.addEventListener('click', beverage.changeQueue);
     }else{
+        //this logic is for show remaining data of user and order
         beverageDiv.innerHTML = `<b>${item.OrderedBeverage.Name}</b><br/><span>${date? date.toDateString() :''}</span>`;
         customerDiv.innerHTML = `<b>${item.customerName}</b><br/><span> ${item.phoneNumber?item.phoneNumber:''}<br/> ${item.address? item.address : ''}</span>`;
     }
@@ -68,12 +71,17 @@ function beveragesQueue() {
     let mixedElement = document.getElementById('isBeingMixed');
     let readyToCollectelement = document.getElementById('isReadyToCollect');
     let collectedElement = document.getElementById('isCollected');
+
+    service.get("/BeveragesQueue", orderList) //
+
     function orderList(status, data) {
         if (status === 200 && data.length) {
+            //filtering corresponding elements in for queue, mixing, ready to collect and collected items
             let beingMixedItems = data.filter(item => item.IsBeingMixed && !item.IsReadyToCollect && !item.IsCollected);
             let readyToCollectItems = data.filter(item => item.IsReadyToCollect && !item.IsCollected);
             let inQueueItems = data.filter(item => !item.IsCollected && !item.IsReadyToCollect && !item.IsBeingMixed);
             let collectedItems = data.filter(item => item.IsCollected);
+            //appending items into the corresponding div elements 
             inQueueItems.map(
                 (item) => appendItemsintoList(item, queueElement)
             );
@@ -88,24 +96,44 @@ function beveragesQueue() {
             )
         }
     }
-    service.get("/BeveragesQueue", orderList)
 }
 
 
-
 window.onload = function () {
-    beveragesMenu();
-    beveragesQueue();
+    beveragesMenu(); //set menu into list in ui
+    beveragesQueue(); //set queue of orders in corresponding list
 
+    //toggle view of queue to completed queue while click switch view button
     document.getElementById('switchView').onclick = () => {
-        if (document.getElementById('completedOrdersContainer').hidden) {
+        if(document.getElementById('completedOrdersContainer').hidden){
             document.getElementById('completedOrdersContainer').hidden = false;
-            document.getElementById('queueContainer').hidden = true;
-        } else {
+            document.getElementById('queueContainer').hidden= true;
+            document.getElementById('gridViewContainer').hidden = true;
+        }else{
             document.getElementById('completedOrdersContainer').hidden = true;
-            document.getElementById('queueContainer').hidden = false;
+            document.getElementById('queueContainer').hidden= false;
+            document.getElementById('gridViewContainer').hidden = true;
         }
     }
-    localStorage.clear()
+
+    //toggle Grid view while click on the Grid View button
+    document.getElementById('gridView').onclick = () => {
+        if( document.getElementById('gridViewContainer').hidden){
+            document.getElementById('gridViewContainer').hidden = false;
+            document.getElementById('completedOrdersContainer').hidden = true;
+            document.getElementById('queueContainer').hidden= true;
+        }else{
+            document.getElementById('gridViewContainer').hidden = true;
+            document.getElementById('completedOrdersContainer').hidden = true;
+            document.getElementById('queueContainer').hidden= false;
+        }
+    }
+    
+    gridView(); //function call to Grid view
+
+    //onchage of page size of grid
+    document.getElementById('page-size').onchange = ()=>{
+       onPageSizeChanged(); 
+    }
 }
 

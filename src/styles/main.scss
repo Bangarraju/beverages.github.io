@@ -1,6 +1,5 @@
 body{
     background-color: black;
-    color: white;
 }
 h3{
     text-transform: uppercase;
@@ -23,6 +22,14 @@ li{
     text-align: center;
 }
 .queue > div{
+    margin: 5px;
+}
+.viewContainer{
+    display: flex;
+    justify-content: flex-end;
+    margin: 5px;
+}
+.viewContainer button{
     margin: 5px;
 }
 .main{

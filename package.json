@@ -30,6 +30,7 @@
     "wepack-cli": "0.0.1-security"
   },
   "dependencies": {
+    "ag-grid-community": "^23.2.1",
     "axios": "^0.19.2"
   }
 }
