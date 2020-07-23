@@ -49,8 +49,7 @@ const validateform = function () {
 
 //validation of phone number 
 function validatePhoneNumber(data){
-    let phoneNumber = document.forms["orderForm"]["phoneNumber"].value
-    console.log(typeof phoneNumber)
+    let phoneNumber = document.forms["orderForm"]["phoneNumber"].value;
     var phoneRegex = /^\d{10}$/; //regex for phone number 
     if(phoneNumber.length>0 && phoneNumber.match(phoneRegex))
     {

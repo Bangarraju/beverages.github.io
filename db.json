@@ -29,7 +29,9 @@
   "BeveragesQueue": [
     {
       "id": 1,
-      "customerName": "a",
+      "customerName": "john",
+      "phoneNumber": "1234567890",
+      "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "733416c1-89ed-46ab-9484-e88ce05960ad",
       "OrderedBeverage": {
@@ -38,16 +40,18 @@
       },
       "OrderQuantity": 1,
       "IsBeingMixed": true,
-      "IsReadyToCollect": false,
-      "IsCollected": false,
+      "IsReadyToCollect": true,
+      "IsCollected": true,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
-      "OrderDeliveredTimeStamp": "0001-01-01T00:00:00+00:00"
+      "OrderDeliveredTimeStamp": 1595406815606
     },
     {
       "id": 2,
-      "customerName": "b",
-      "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
+      "customerName": "joe",
+      "phoneNumber": "1234567890",
+      "address": "doorno:779, vizianagaram",
+      "OrderCreatedTimeStamp": "1595315962924",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
       "OrderedBeverage": {
         "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
@@ -59,11 +63,13 @@
       "IsCollected": false,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
-      "OrderDeliveredTimeStamp": "0001-01-01T00:00:00+00:00"
+      "OrderDeliveredTimeStamp": "1595315962924"
     },
     {
       "id": 3,
-      "customerName": "c",
+      "customerName": "remo",
+      "phoneNumber": "1234567890",
+      "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
       "OrderedBeverage": {
@@ -73,14 +79,16 @@
       "OrderQuantity": 1,
       "IsBeingMixed": true,
       "IsReadyToCollect": true,
-      "IsCollected": false,
+      "IsCollected": true,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
-      "OrderDeliveredTimeStamp": 1594052165764
+      "OrderDeliveredTimeStamp": 1595315962924
     },
     {
       "id": 4,
-      "customerName": "d",
+      "customerName": "dellito",
+      "phoneNumber": "1234567890",
+      "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
       "OrderedBeverage": {
@@ -89,25 +97,59 @@
       },
       "OrderQuantity": 1,
       "IsBeingMixed": true,
-      "IsReadyToCollect": true,
-      "IsCollected": true,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
-      "OrderDeliveredTimeStamp": 1594906505785
+      "OrderDeliveredTimeStamp": 1594199430867
     },
     {
-      "customerName": "Raju",
-      "OrderCreatedTimeStamp": 1594906459421,
-      "BeverageBarOrderId": 0.09800981456445745,
+      "customerName": "raju",
+      "phoneNumber": "9876543210",
+      "address": "Demo1, street, vishakapatnam",
+      "OrderCreatedTimeStamp": 1595391748750,
+      "BeverageBarOrderId": 0.11264786874585253,
       "OrderedBeverage": {
         "BeverageId": "1d10b218-f4da-4ae3-a383-de1657dbaa6a",
         "Name": "Virgin Frozen Margarita"
       },
+      "IsBeingMixed": true,
+      "IsReadyToCollect": true,
+      "IsCollected": true,
+      "OrderDeliveredTimeStamp": 1595391823580,
+      "id": 5
+    },
+    {
+      "customerName": "a",
+      "phoneNumber": "9876543210",
+      "address": "door no:44, sds, hyderabad",
+      "OrderCreatedTimeStamp": 1595406711972,
+      "BeverageBarOrderId": 0.8726828606791961,
+      "OrderedBeverage": {
+        "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
+        "Name": "Raspberry Fizz"
+      },
+      "IsBeingMixed": true,
+      "IsReadyToCollect": true,
+      "IsCollected": false,
+      "OrderDeliveredTimeStamp": 1595473714790,
+      "id": 6
+    },
+    {
+      "customerName": "sample",
+      "phoneNumber": "0123456789",
+      "address": "Demo Street, VZM",
+      "OrderCreatedTimeStamp": 1595513812540,
+      "BeverageBarOrderId": 0.4135568473540352,
+      "OrderedBeverage": {
+        "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
+        "Name": "Raspberry Fizz"
+      },
       "IsBeingMixed": false,
       "IsReadyToCollect": false,
       "IsCollected": false,
-      "OrderDeliveredTimeStamp": 1594906459421,
-      "id": 5
+      "OrderDeliveredTimeStamp": 1595513812540,
+      "id": 7
     }
   ]
 }
