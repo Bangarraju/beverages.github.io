@@ -1,5 +1,6 @@
 import Service from './service';
-import { append } from './nodeOperations';
+import { changeQueueDomElements } from './nodeOperations';
+import { gridView } from './gridView';
 
 const service = Service;
 
@@ -53,26 +54,19 @@ class Beverage{
         const itemId = event.target.id;
         const url = `/BeveragesQueue/${itemId}`;
         let clickLiele = document.getElementById(itemId).parentElement;
-        let currentStateEle = document.getElementById(clickId);
         if (clickId == "inQueue") {
             this.IsBeingMixed = true; //set isBeingMixed flag to true
-            let nextStateEle = document.getElementById('isBeingMixed');
-            currentStateEle.removeChild(clickLiele);
-            append(nextStateEle, clickLiele);
+            changeQueueDomElements(clickLiele,clickId,'isBeingMixed')
         } else if (clickId == "isBeingMixed") {
             this.IsReadyToCollect = true; //set isreadytocollect flag to true
-            let nextStateEle = document.getElementById('isReadyToCollect');
-            currentStateEle.removeChild(clickLiele);
-            append(nextStateEle, clickLiele);
+            changeQueueDomElements(clickLiele,clickId,nextStateEle)
         } else if (clickId == "isReadyToCollect") {
             this.IsCollected = true; //set iscollected flag to true
             //show hidden data in collected elements
             document.getElementById(itemId).firstChild.lastElementChild.hidden = false; 
             document.getElementById(itemId).lastElementChild.lastElementChild.hidden = false;
             this.OrderDeliveredTimeStamp = Date.now(); // set completed date to when it is completed
-            let nextStateEle = document.getElementById('isCollected');
-            currentStateEle.removeChild(clickLiele);
-            append(nextStateEle, clickLiele);
+            changeQueueDomElements(clickLiele,clickId,'isCollected')
         }
 
         //send changed data to server 
@@ -85,6 +79,9 @@ class Beverage{
                 console.log('patch failed')
             }
         }
+        //manipulate grid elements when the status of beverae changed
+        document.getElementById('grid').innerHTML="";
+        gridView()
     }
 }
 
