@@ -1,20 +1,54 @@
 //importing ag-grid modules
 import 'ag-grid-community/dist/styles/ag-grid.css'
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+import 'ag-grid-enterprise';
 import { Grid } from 'ag-grid-community';
+// import {Grid} from 'ag-grid-enterprise';
 
 //importing user define modules
 import Service from './service';
-import { createNode } from './nodeOperations';
+import { createNode,changeQueueDomElements } from './nodeOperations';
+
 
 const service = Service //service object for getting orders data
 
 //defining headers of the table or Grid
 let columnDefs = [
-  { headerName: "Name", field: "customerName" },
-  { headerName: "Phone number", field: "phoneNumber" },
+  {
+    headerName: "Name", 
+    field: "customerName", 
+    headerCheckboxSelection: true,
+    headerCheckboxSelectionFilteredOnly: true,
+    checkboxSelection: true,
+  },
+  { headerName: "Phone number", field: "phoneNumber", editable: true },
   { headerName: "Order Name", field: "OrderedBeverage.Name" },
-  { headerName: "Order Status", field: "status" },
+  {
+    headerName: "Order Status", 
+    field: "status", 
+    editable: true, 
+    cellEditor: 'agRichSelectCellEditor',
+    cellEditorParams: function (params) {
+      let status = params.data.status
+      if (status == 'In Queue') {
+        return {
+          values: ['In Queue', 'Being Mixed', 'Ready to Collect', 'Collected']
+        }
+      } else if (status == 'Being Mixed') {
+        return {
+          values: ['Being Mixed', 'Ready to Collect', 'Collected']
+        };
+      } else if (status == 'Ready to Collect') {
+        return {
+          values: ['Ready to Collect', 'Collected']
+        };
+      } else if (status == 'Collected') {
+        return {
+          values: ['Collected']
+        };
+      }
+    }
+  },
   { headerName: "Order Collected Date", field: "OrderDeliveredTime" },
   { headerName: "Address", field: "address" },
 ];
@@ -24,6 +58,7 @@ let gridOptions = {
   defaultColDef: {
     sortable: true,
     resizable: true,
+    selectable: true,
     filter: true,
     flex: 1,
     minWidth: 150,
@@ -31,13 +66,58 @@ let gridOptions = {
   suppressRowClickSelection: true,
   groupSelectsChildren: true,
   enableRangeSelection: true,
+  // rowModelType:'serverSide',
   columnDefs: columnDefs, //for adding headers to the table
   pagination: true,
   paginationPageSize: 3, //by default pagination page size
   paginationNumberFormatter(params) {
     return '[' + params.value.toLocaleString() + ']';
   },
+  onCellValueChanged: onCellValueChanged,
 };
+
+function onCellValueChanged(params) {
+  let beverage = {}
+  let colId = params.column.getId();
+  let beverageId = params.data.id;
+  const url = `/BeveragesQueue/${beverageId}`;
+
+  //changed in status 
+  if (colId === 'status') {
+    let beverageStatus = params.data.status
+    let clickLiele = document.getElementById(beverageId).parentElement;
+    if (beverageStatus == 'Being Mixed') {
+      beverage.IsBeingMixed = true;
+      //dom element changes
+      changeQueueDomElements(clickLiele,'inQueue','isBeingMixed')
+    }
+    if (beverageStatus == 'Ready to Collect') {
+      beverage.IsReadyToCollect = true;
+      //dom element changes
+      changeQueueDomElements(clickLiele,'isBeingMixed','isReadyToCollect')
+    }
+    if (beverageStatus == 'Collected') {
+      beverage.IsCollected = true;
+      //dom element changes
+      document.getElementById(beverageId).firstChild.lastElementChild.hidden = false; 
+      document.getElementById(beverageId).lastElementChild.lastElementChild.hidden = false;
+      changeQueueDomElements(clickLiele,'isReadyToCollect','isCollected')
+    }
+  }
+  if (colId === 'phoneNumber') {
+    beverage.phoneNumber = params.data.phoneNumber;
+  }
+  //send changed data to server 
+  service.sendRequest(url, 'PATCH', beverage, handleRequst)
+  //callback function to handle request of patch 
+  function handleRequst(status, data) {
+    if (status == 200) {
+      console.log('patched data sucess')
+    } else {
+      console.log('patch failed')
+    }
+  }
+}
 
 //if page size changes, it sets pagination size
 export function onPageSizeChanged(newPageSize) {
@@ -56,10 +136,11 @@ export function gridView() {
       let rowdata = data
       rowdata.map((rowdata) => {
         let date = new Date(rowdata.OrderDeliveredTimeStamp);
-        rowdata.status = rowdata.IsCollected ? 'Collected' : (rowdata.IsReadyToCollect ? 'Ready to Collect' : (rowdata.IsBeingMixed ? 'Mixing' : 'In Queue'));
+        rowdata.status = rowdata.IsCollected ? 'Collected' : (rowdata.IsReadyToCollect ? 'Ready to Collect' : (rowdata.IsBeingMixed ? 'Being Mixed' : 'In Queue'));
         rowdata.OrderDeliveredTime = rowdata.IsCollected ? date.toDateString() : '';
       })
       gridOptions.api.setRowData(rowdata);
+      // gridOptions.api.setServerSideDatasource(rowdata);
     }
   }
 

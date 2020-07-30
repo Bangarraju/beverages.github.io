@@ -25,7 +25,7 @@ const validateform = function () {
     let customerName = form["customerName"].value;
     let beverage = form["beverage"].value;
     let phoneNumber = form["phoneNumber"].value;
-    if (customerName !== "" && beverage !== "" && phoneNumber !== "") {
+    if (validatePhoneNumber() && customerName !== "" && beverage !== "" && phoneNumber !== "" ) {
         return true;
     } else {
         //validating customerName whether it is filles=d or not
@@ -51,7 +51,7 @@ const validateform = function () {
 function validatePhoneNumber(data){
     let phoneNumber = document.forms["orderForm"]["phoneNumber"].value;
     var phoneRegex = /^\d{10}$/; //regex for phone number 
-    if(phoneNumber.length>0 && phoneNumber.match(phoneRegex))
+    if(phoneNumber.length > 0 && phoneNumber.match(phoneRegex))
     {
         document.getElementById('phoneErrorMessage').innerText = '';
         return true;
@@ -66,7 +66,7 @@ window.onload = function () {
     setdropdownList(); //set dropdown list
     //validating form on submit
     document.orderForm.onsubmit = (e) => {
-        if (validateform() && validatePhoneNumber() ) {
+        if (validateform()) {
             beverage.orderBeverage(e);
         } else {
             e.preventDefault();
