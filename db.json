@@ -29,8 +29,8 @@
   "BeveragesQueue": [
     {
       "id": 1,
-      "customerName": "john",
-      "phoneNumber": "1234567890",
+      "customerName": "John",
+      "phoneNumber": "9963069288",
       "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "733416c1-89ed-46ab-9484-e88ce05960ad",
@@ -39,17 +39,17 @@
         "Name": "Sparkling Cranberry Punch"
       },
       "OrderQuantity": 1,
-      "IsBeingMixed": true,
-      "IsReadyToCollect": true,
-      "IsCollected": true,
+      "IsBeingMixed": false,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
       "OrderDeliveredTimeStamp": 1595406815606
     },
     {
       "id": 2,
-      "customerName": "joe",
-      "phoneNumber": "1234567890",
+      "customerName": "Joe",
+      "phoneNumber": 9951923915,
       "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "1595315962924",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
@@ -58,8 +58,8 @@
         "Name": "Raspberry Fizz"
       },
       "OrderQuantity": 2,
-      "IsBeingMixed": false,
-      "IsReadyToCollect": false,
+      "IsBeingMixed": true,
+      "IsReadyToCollect": true,
       "IsCollected": false,
       "BeverageBarUserId": "U034AT9TN",
       "BeverageBarUserFirstName": "Lloyd",
@@ -67,8 +67,8 @@
     },
     {
       "id": 3,
-      "customerName": "remo",
-      "phoneNumber": "1234567890",
+      "customerName": "Remo",
+      "phoneNumber": "9951923915",
       "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
@@ -86,8 +86,8 @@
     },
     {
       "id": 4,
-      "customerName": "dellito",
-      "phoneNumber": "1234567890",
+      "customerName": "Dellito",
+      "phoneNumber": 9963069288,
       "address": "doorno:779, vizianagaram",
       "OrderCreatedTimeStamp": "2018-12-19T15:07:27.255+00:00",
       "BeverageBarOrderId": "6aba8c4f-4d2c-41f7-ac96-dcb3ed0ced1d",
@@ -96,7 +96,7 @@
         "Name": "Iced Chocolate Delight"
       },
       "OrderQuantity": 1,
-      "IsBeingMixed": true,
+      "IsBeingMixed": false,
       "IsReadyToCollect": false,
       "IsCollected": false,
       "BeverageBarUserId": "U034AT9TN",
@@ -104,8 +104,8 @@
       "OrderDeliveredTimeStamp": 1594199430867
     },
     {
-      "customerName": "raju",
-      "phoneNumber": "9876543210",
+      "customerName": "Raju",
+      "phoneNumber": 9963069288,
       "address": "Demo1, street, vishakapatnam",
       "OrderCreatedTimeStamp": 1595391748750,
       "BeverageBarOrderId": 0.11264786874585253,
@@ -120,8 +120,8 @@
       "id": 5
     },
     {
-      "customerName": "a",
-      "phoneNumber": "9876543210",
+      "customerName": "A",
+      "phoneNumber": 9963069288,
       "address": "door no:44, sds, hyderabad",
       "OrderCreatedTimeStamp": 1595406711972,
       "BeverageBarOrderId": 0.8726828606791961,
@@ -130,14 +130,14 @@
         "Name": "Raspberry Fizz"
       },
       "IsBeingMixed": true,
-      "IsReadyToCollect": true,
+      "IsReadyToCollect": false,
       "IsCollected": false,
-      "OrderDeliveredTimeStamp": 1595473714790,
+      "OrderDeliveredTimeStamp": 1596111454981,
       "id": 6
     },
     {
-      "customerName": "sample",
-      "phoneNumber": "0123456789",
+      "customerName": "Sample",
+      "phoneNumber": 9963069288,
       "address": "Demo Street, VZM",
       "OrderCreatedTimeStamp": 1595513812540,
       "BeverageBarOrderId": 0.4135568473540352,
@@ -145,11 +145,27 @@
         "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
         "Name": "Raspberry Fizz"
       },
-      "IsBeingMixed": false,
+      "IsBeingMixed": true,
       "IsReadyToCollect": false,
       "IsCollected": false,
       "OrderDeliveredTimeStamp": 1595513812540,
       "id": 7
+    },
+    {
+      "customerName": "Sample demo",
+      "phoneNumber": "9876543210",
+      "address": "door number : 123, city, mandal, state",
+      "OrderCreatedTimeStamp": 1596718806966,
+      "BeverageBarOrderId": 0.5173585941009395,
+      "OrderedBeverage": {
+        "BeverageId": "0ae5a67d-d055-4fef-9a0a-889001dcb241",
+        "Name": "Raspberry Fizz"
+      },
+      "IsBeingMixed": false,
+      "IsReadyToCollect": false,
+      "IsCollected": false,
+      "OrderDeliveredTimeStamp": 1596718806966,
+      "id": 8
     }
   ]
 }

@@ -1,22 +1,22 @@
 import Service from './service';
 import { createNode, append } from './nodeOperations';
 import Beverage from './beverage';
-import { gridView, onPageSizeChanged } from './gridView';
+import { gridView, onPageSizeChanged,onStatusUpdate,moveToNextState } from './gridView';
 import '../styles/main.scss';
+import {addMenu, setMenuList} from './indexedDb';
 
-const localStorage = window.localStorage; // local storage object 
 const service = Service; //axios service object
 const beverage = Beverage; // beverage object to order and changing queue
 
 /* get menu from server and set it into the local storage*/
-service.get("/BeveragesMenu", setMenu)
+service.get("/BeveragesMenu", handleRequest)
 
-function setMenu(status, data) {
+function handleRequest(status, data) {
     if (status === 200) {
         if (data.length) {
-            localStorage.setItem('menu', JSON.stringify(data));
+            addMenu(data)
         } else {
-            console.log('not get any data from server')
+            console.log('Not get any data from server')
         }
     }
 }
@@ -52,8 +52,11 @@ function appendItemsintoList(item, ul) {
 //setting menu into list and append into dom elements
 function beveragesMenu() {
     const ul = document.getElementById('beverageMenu');
-    if (localStorage.getItem('menu')) {
-        let menu = JSON.parse(localStorage.getItem('menu'));
+    setMenuList(appendListTopage)
+
+    function appendListTopage(menu){
+    if (menu) {
+        // let menu = JSON.parse(localStorage.getItem('menu'));
         menu.map(function (item) {
             let li = createNode('li');
             let div = createNode('div');
@@ -63,6 +66,7 @@ function beveragesMenu() {
             append(ul, li);
         })
     }
+}
 }
 
 //fetching orders and set into list and append those to dom elements
@@ -132,8 +136,30 @@ window.onload = function () {
     gridView(); //function call to Grid view
 
     //onchage of page size of grid
-    document.getElementById('page-size').onchange = ()=>{
+    // document.getElementById('page-size').onchange = ()=>{
+    //     console.log('page number changed')
+    //    onPageSizeChanged(); 
+    // }
+
+    $('#page-size').on('load change',()=>{
+        console.log('page number changed')
        onPageSizeChanged(); 
+    })
+    let updateElement = document.getElementById('update')
+    updateElement.onclick = ()=>{
+        onStatusUpdate()
+    }
+
+    document.getElementById('moveToNextState').onclick = () => {
+        moveToNextState();
+    }
+
+    document.getElementById('statusDropdown').onchange = (event)=>{
+        if(event.target.value){
+            updateElement.hidden = false
+        }else{
+            updateElement.hidden = true
+        }
     }
 }
 
