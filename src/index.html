@@ -25,36 +25,36 @@
         </div>
         <div class="main">
             <div id="menuContainer">
-                <div class="title">Beverage Menu</div>
+                <div class="title">Beverage menu</div>
                 <div class="menu">
                     <ul id="beverageMenu"></ul>
                     <div class="orderButton">
-                        <div>want to order click here</div>
+                        <div>Want to order click here</div>
                         <div>
-                            <a class="button" href="form.html">Order Now</a>
+                            <a class="button" href="form.html">Order now</a>
                         </div>
                     </div>
                 </div>
             </div>
             <div id="queueContainer">
-                <div class="title">Beverage Queue</div>
+                <div class="title">Beverage queue</div>
                 <div class="queue" id="queueContainer">
                     <div>
-                        <h3>In the Queue</h3>
+                        <h3>In the queue</h3>
                         <ul id="inQueue"></ul>
                     </div>
                     <div>
-                        <h3>Being Mixed</h3>
+                        <h3>Being mixed</h3>
                         <ul id="isBeingMixed"></ul>
                     </div>
                     <div>
-                        <h3>Ready To Collect</h3>
+                        <h3>Ready to collect</h3>
                         <ul id="isReadyToCollect"></ul>
                     </div>
                 </div>
             </div>
             <div id="completedOrdersContainer" hidden="true">
-                <div class="title">Completed Orders</div>
+                <div class="title">Completed orders</div>
                 <div class="collected">
                     <div>
                         <h3>Already Collected Items</h3>
@@ -64,11 +64,32 @@
             </div>
             <div id="gridViewContainer" hidden>
                 <div class="title">List of orders</div>
-                <div id="grid" class="ag-theme-alpine" style="height: 400px;width:600px;">
+                <div class="example-wrapper" style="display: flex;flex-direction: column;">
+                    <div class="example-header" style="margin-bottom: 5px;">
+                        <div id="updateStatus" hidden>
+                            <button id="moveToNextState">Move to next state</button>
+                            <select id="statusDropdown">
+                                <option value="">--- Select status here ---</option>
+                            </select>
+                            <button id="update" hidden>Update</button>
+                        </div>
+                    </div>
+                    <div id="grid" class="ag-theme-alpine" style="height: 400px;width:600px;">
+                    </div>
                 </div>
+                
             </div>
         </div>
 
     </div>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="/__/firebase/7.17.2/firebase-app.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+        https://firebase.google.com/docs/web/setup#available-libraries -->
+    <script src="/__/firebase/7.17.2/firebase-analytics.js"></script>
+
+    <!-- Initialize Firebase -->
+    <script src="/__/firebase/init.js"></script>
 </body>
 </html>

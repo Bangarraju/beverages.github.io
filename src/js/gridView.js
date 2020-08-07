@@ -7,40 +7,37 @@ import { Grid } from 'ag-grid-community';
 
 //importing user define modules
 import Service from './service';
-import { createNode,changeQueueDomElements } from './nodeOperations';
+import { createNode, changeQueueDomElements } from './nodeOperations';
 
 
 const service = Service //service object for getting orders data
-
 //defining headers of the table or Grid
+const queue = ['In queue', 'Being mixed', 'Ready to collect', 'Collected']
 let columnDefs = [
   {
-    headerName: "Name", 
-    field: "customerName", 
-    headerCheckboxSelection: true,
-    headerCheckboxSelectionFilteredOnly: true,
-    checkboxSelection: true,
+    headerName: "Name",
+    field: "customerName",
   },
   { headerName: "Phone number", field: "phoneNumber", editable: true },
-  { headerName: "Order Name", field: "OrderedBeverage.Name" },
+  { headerName: "Order name", field: "OrderedBeverage.Name" },
   {
-    headerName: "Order Status", 
-    field: "status", 
-    editable: true, 
-    cellEditor: 'agRichSelectCellEditor',
+    headerName: "Order status",
+    field: "status",
+    editable: true,
+    cellEditor: 'agSelectCellEditor',
     cellEditorParams: function (params) {
       let status = params.data.status
-      if (status == 'In Queue') {
+      if (status == 'In queue') {
         return {
-          values: ['In Queue', 'Being Mixed', 'Ready to Collect', 'Collected']
+          values: ['In queue', 'Being mixed', 'Ready to collect', 'Collected']
         }
-      } else if (status == 'Being Mixed') {
+      } else if (status == 'Being mixed') {
         return {
-          values: ['Being Mixed', 'Ready to Collect', 'Collected']
+          values: ['Being mixed', 'Ready to collect', 'Collected']
         };
-      } else if (status == 'Ready to Collect') {
+      } else if (status == 'Ready to collect') {
         return {
-          values: ['Ready to Collect', 'Collected']
+          values: ['Ready to collect', 'Collected']
         };
       } else if (status == 'Collected') {
         return {
@@ -49,7 +46,7 @@ let columnDefs = [
       }
     }
   },
-  { headerName: "Order Collected Date", field: "OrderDeliveredTime" },
+  { headerName: "Order collected date", field: "OrderDeliveredTime" },
   { headerName: "Address", field: "address" },
 ];
 
@@ -62,50 +59,144 @@ let gridOptions = {
     filter: true,
     flex: 1,
     minWidth: 150,
+    headerCheckboxSelection: isFirstColumn,
+    headerCheckboxSelectionFilteredOnly: isFirstColumn,
+    checkboxSelection: isFirstColumn,
   },
   suppressRowClickSelection: true,
   groupSelectsChildren: true,
   enableRangeSelection: true,
-  // rowModelType:'serverSide',
+  stopEditingWhenGridLosesFocus: true, //stop editing when grid loses focus
   columnDefs: columnDefs, //for adding headers to the table
   pagination: true,
   paginationPageSize: 3, //by default pagination page size
+  rowSelection: "multiple",
   paginationNumberFormatter(params) {
     return '[' + params.value.toLocaleString() + ']';
   },
   onCellValueChanged: onCellValueChanged,
+  onSelectionChanged: onSelectionChanged,
 };
 
+function isFirstColumn(params) {
+  var displayedColumns = params.columnApi.getAllDisplayedColumns();
+  var thisIsFirstColumn = displayedColumns[0] === params.column;
+  return thisIsFirstColumn;
+}
+
+function onSelectionChanged(params) {
+  let selectedRows = gridOptions.api.getSelectedRows();
+  let updateStatus = document.getElementById('updateStatus')
+  let select = document.getElementById('statusDropdown')
+  if (selectedRows.length > 0) {
+    updateStatus.hidden = false;
+    select.length = 1;
+    let selectedRowsStatus = selectedRows.map((row) => { return row.status });
+    selectedRowsStatus = selectedRowsStatus.filter(onlyUnique);
+    let updatedQueue = queue;
+    let indexes = selectedRowsStatus.map((selectedRowStatus)=>{return queue.indexOf(selectedRowStatus)})
+    let min_index = Math.min.apply(null,indexes)
+    updatedQueue = queue.slice(min_index + 1)
+    // if(selectedRows.length == 1){
+    //   let index = queue.indexOf(selectedRowsStatus.toString());
+    //   console.log(index)
+    //   if (index >= 0) {
+    //     updatedQueue = queue.slice(index + 1)
+    //   }
+    // }else{
+    //   let indexes = selectedRowsStatus.map((selectedRowStatus)=>{return queue.indexOf(selectedRowStatus)})
+    //   let min_index = Math.min.apply(null,indexes)
+    //   updatedQueue = queue.slice(min_index + 1)
+    // }
+    updatedQueue.map((stat) => {
+      let option = createNode('option')
+      option.text = `${stat}`
+      select.add(option)
+    })
+  } else {
+    updateStatus.hidden = true;
+    document.getElementById('update').hidden = true
+  }
+
+  function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+}
+
+export function onStatusUpdate() {
+  let newstatusElement = document.getElementById('statusDropdown')
+  if (newstatusElement.selectedIndex < 1) return;
+  var api = gridOptions.api;
+  let selectedRows = api.getSelectedRows();
+  selectedRows.map((selectedRow) => {
+    let oldStatus = selectedRow.status;
+    if (selectedRow.status == newstatusElement.value) { return };
+    if (queue.indexOf(selectedRow.status) + 1 <= queue.indexOf(newstatusElement.value)) {
+      selectedRow.status = newstatusElement.value;
+      pushDataToServer('status', selectedRow, oldStatus)
+    } else {
+      return
+    }
+
+    api.applyTransactionAsync({ update: [selectedRow] });
+  })
+}
+
+export function moveToNextState() {
+  var api = gridOptions.api;
+  let selectedRows = api.getSelectedRows();
+  selectedRows.map((selectedRow) => {
+    let oldStatus = selectedRow.status
+    switch (oldStatus) {
+      case 'In queue':
+        selectedRow.status = 'Being mixed';
+        break;
+      case 'Being mixed':
+        selectedRow.status = 'Ready to collect';
+        break;
+      case 'Ready to collect':
+        selectedRow.status = 'Collected';
+        break;
+      case 'Collected':
+        break;
+    }
+    pushDataToServer('status', selectedRow, oldStatus)
+    api.applyTransactionAsync({ update: [selectedRow] });
+  })
+}
+
 function onCellValueChanged(params) {
-  let beverage = {}
   let colId = params.column.getId();
-  let beverageId = params.data.id;
+  // console.log(params.oldValue)
+  pushDataToServer(colId, params.data, params.oldValue)
+}
+
+function pushDataToServer(colId, data, oldStatus) {
+  let beverage = {}
+  let beverageId = data.id;
   const url = `/BeveragesQueue/${beverageId}`;
 
   //changed in status 
   if (colId === 'status') {
-    let beverageStatus = params.data.status
+    let beverageStatus = data.status
     let clickLiele = document.getElementById(beverageId).parentElement;
-    if (beverageStatus == 'Being Mixed') {
+    if (beverageStatus == 'Being mixed') {
       beverage.IsBeingMixed = true;
-      //dom element changes
-      changeQueueDomElements(clickLiele,'inQueue','isBeingMixed')
     }
-    if (beverageStatus == 'Ready to Collect') {
+    if (beverageStatus == 'Ready to collect') {
       beverage.IsReadyToCollect = true;
-      //dom element changes
-      changeQueueDomElements(clickLiele,'isBeingMixed','isReadyToCollect')
     }
     if (beverageStatus == 'Collected') {
       beverage.IsCollected = true;
       //dom element changes
-      document.getElementById(beverageId).firstChild.lastElementChild.hidden = false; 
+      document.getElementById(beverageId).firstChild.lastElementChild.hidden = false;
       document.getElementById(beverageId).lastElementChild.lastElementChild.hidden = false;
-      changeQueueDomElements(clickLiele,'isReadyToCollect','isCollected')
     }
+    //dom element changes
+    changeQueueDomElements(clickLiele, getId(oldStatus), getId(beverageStatus))
   }
   if (colId === 'phoneNumber') {
-    beverage.phoneNumber = params.data.phoneNumber;
+    beverage.phoneNumber = data.phoneNumber;
   }
   //send changed data to server 
   service.sendRequest(url, 'PATCH', beverage, handleRequst)
@@ -115,6 +206,21 @@ function onCellValueChanged(params) {
       console.log('patched data sucess')
     } else {
       console.log('patch failed')
+    }
+  }
+
+  function getId(state) {
+    switch (state) {
+      case 'In queue':
+        return 'inQueue'
+      case 'Being mixed':
+        return 'isBeingMixed'
+      case 'Ready to collect':
+        return 'isReadyToCollect'
+      case 'Collected':
+        return 'isCollected'
+      default:
+        return
     }
   }
 }
@@ -136,7 +242,7 @@ export function gridView() {
       let rowdata = data
       rowdata.map((rowdata) => {
         let date = new Date(rowdata.OrderDeliveredTimeStamp);
-        rowdata.status = rowdata.IsCollected ? 'Collected' : (rowdata.IsReadyToCollect ? 'Ready to Collect' : (rowdata.IsBeingMixed ? 'Being Mixed' : 'In Queue'));
+        rowdata.status = rowdata.IsCollected ? 'Collected' : (rowdata.IsReadyToCollect ? 'Ready to collect' : (rowdata.IsBeingMixed ? 'Being mixed' : 'In queue'));
         rowdata.OrderDeliveredTime = rowdata.IsCollected ? date.toDateString() : '';
       })
       gridOptions.api.setRowData(rowdata);
@@ -146,14 +252,15 @@ export function gridView() {
 
   //get Grid element to show grid
   let eGridDiv = document.querySelector('#grid');
+  eGridDiv.innerHTML = "";
   new Grid(eGridDiv, gridOptions); //enebling Grid and sending data and corresponding settings to the Grid class to ag-Grid
 
   //setting user defined pagination in the paging div
   let pagingDiv = createNode('div')
   pagingDiv.classList.add('example-wrapper')
   pagingDiv.innerHTML = `<div class="example-header">
-                        Page Size:
-                        <select onchange="" id="page-size">
+                        Page size:
+                        <select id="page-size">
                           <option value="3" selected>3</option>
                           <option value="6">6</option>
                           <option value="9">9</option>

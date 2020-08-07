@@ -59,7 +59,7 @@ class Beverage{
             changeQueueDomElements(clickLiele,clickId,'isBeingMixed')
         } else if (clickId == "isBeingMixed") {
             this.IsReadyToCollect = true; //set isreadytocollect flag to true
-            changeQueueDomElements(clickLiele,clickId,nextStateEle)
+            changeQueueDomElements(clickLiele,clickId,'isReadyToCollect')
         } else if (clickId == "isReadyToCollect") {
             this.IsCollected = true; //set iscollected flag to true
             //show hidden data in collected elements
@@ -80,7 +80,7 @@ class Beverage{
             }
         }
         //manipulate grid elements when the status of beverae changed
-        document.getElementById('grid').innerHTML="";
+        
         gridView()
     }
 }

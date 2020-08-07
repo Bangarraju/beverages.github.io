@@ -1,5 +1,6 @@
 import { createNode, append } from './nodeOperations';
 import Beverage from './beverage';
+import {setMenuList} from './indexedDb'
 
 import '../styles/form.scss'
 
@@ -8,14 +9,16 @@ const beverage = Beverage; //beverage object
 //set the option elements into dorpdown 
 function setdropdownList() {
     const select = document.getElementById('menuDropdown');
-    if (localStorage.getItem('menu')) {
-        let menu = JSON.parse(localStorage.getItem('menu'));
-        menu.map(function (item) {
-            let option = createNode('option');
-            option.text = `${item.Name}`;
-            option.id = `${item.BeverageId}`;
-            select.add(option);
-        })
+    setMenuList(appendMenuToDropdow)
+    function appendMenuToDropdow(menu) {
+        if (menu) {
+            menu.map(function (item) {
+                let option = createNode('option');
+                option.text = `${item.Name}`;
+                option.id = `${item.BeverageId}`;
+                select.add(option);
+            })
+        }
     }
 }
 
@@ -25,38 +28,36 @@ const validateform = function () {
     let customerName = form["customerName"].value;
     let beverage = form["beverage"].value;
     let phoneNumber = form["phoneNumber"].value;
-    if (validatePhoneNumber() && customerName !== "" && beverage !== "" && phoneNumber !== "" ) {
+    if (validatePhoneNumber() && customerName !== "" && beverage !== "" && phoneNumber !== "") {
         return true;
     } else {
         //validating customerName whether it is filles=d or not
-        (customerName == "" || customerName == null) ? addClassToElement('customerName','required')
-                                                    : removeClassToElement('customerName','required'); 
+        (customerName == "" || customerName == null) ? addClassToElement('customerName', 'required')
+            : removeClassToElement('customerName', 'required');
         //validating beverage item whether it is selected or not
-        (beverage == "" || beverage == null) ? addClassToElement('beverage','required')
-                                            : removeClassToElement('beverage','required');
+        (beverage == "" || beverage == null) ? addClassToElement('beverage', 'required')
+            : removeClassToElement('beverage', 'required');
         //validating phoneNumber whether it is filled or not
-        (phoneNumber == "" || phoneNumber == null) ? addClassToElement('phoneNumber','required')
-                                                  : removeClassToElement('phoneNumber','required') 
+        (phoneNumber == "" || phoneNumber == null) ? addClassToElement('phoneNumber', 'required')
+            : removeClassToElement('phoneNumber', 'required')
         return false;
     }
-    function addClassToElement(ElementName, className){
+    function addClassToElement(ElementName, className) {
         form[ElementName].classList.add(className)
     }
-    function removeClassToElement(ElementName,className){
+    function removeClassToElement(ElementName, className) {
         form[ElementName].classList.remove(className)
     }
 }
 
 //validation of phone number 
-function validatePhoneNumber(data){
+function validatePhoneNumber(data) {
     let phoneNumber = document.forms["orderForm"]["phoneNumber"].value;
     var phoneRegex = /^\d{10}$/; //regex for phone number 
-    if(phoneNumber.length > 0 && phoneNumber.match(phoneRegex))
-    {
+    if (phoneNumber.length > 0 && phoneNumber.match(phoneRegex)) {
         document.getElementById('phoneErrorMessage').innerText = '';
         return true;
-    }else
-    {
+    } else {
         document.getElementById('phoneErrorMessage').innerText = '* rquired digits and 10 digit phone number'
         return false;
     }
@@ -75,26 +76,26 @@ window.onload = function () {
     }
 
     //onBlur on phone number field
-    $("input[name='phoneNumber']").on("blur",function () {
-        if(validatePhoneNumber()){
+    $("input[name='phoneNumber']").on("blur", function () {
+        if (validatePhoneNumber()) {
             this.classList.remove('required')
-        }else {
+        } else {
             this.classList.add('required')
         }
     })
 
     //onblur on customerName field of form
-    $("input[name='customerName']").on("blur",function () {
-        if(this.value){
+    $("input[name='customerName']").on("blur", function () {
+        if (this.value) {
             this.classList.remove('required')
-        }else{
+        } else {
             this.classList.add('required')
         }
     })
 
     //onblur on select field
-    $("select").on("blur",function(){
+    $("select").on("blur", function () {
         this.classList.remove('required')
     })
-        
+
 }
